@@ -1,0 +1,24 @@
+{
+  "name": "cloudcogsio/paypal-rest",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {"name": "Ricardo Assing", "email": "ricardo@tsiana.ca"}
+  ],
+  "keywords": [
+    "cloudcogs","cloudcogs.io","omnipay","PayPal","REST","api"
+  ],
+  "description": "PHP SDK for PayPal's REST API with Omnipay compatible Gateway",
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^7.4",
+    "omnipay/common": "^3",
+    "ext-json": "*",
+    "ramsey/uuid": "^4.2.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Cloudcogs\\PayPal\\": "src"
+    }
+  }
+}
