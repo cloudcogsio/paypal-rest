@@ -8,6 +8,8 @@ use Cloudcogs\PayPal\Support\CatalogProducts\Product;
 
 class ShowProductDetailsResponse extends AbstractResponse
 {
+    protected Product $product;
+
     /**
      * @inheritDoc
      */
@@ -16,10 +18,13 @@ class ShowProductDetailsResponse extends AbstractResponse
         return $this->getHttpResponse()->getStatusCode() == 200;
     }
 
+    /**
+     * @throws UnsuccessfulResponseException
+     */
     public function getProduct(): Product
     {
         if ($this->isSuccessful())
-            return new Product($this->getData());
+            return $this->product ?? $this->product = new Product($this->getData());
 
         throw new UnsuccessfulResponseException();
     }

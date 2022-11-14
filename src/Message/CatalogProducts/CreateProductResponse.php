@@ -2,11 +2,13 @@
 
 namespace Cloudcogs\PayPal\Message\CatalogProducts;
 
+use Cloudcogs\PayPal\Exception\UnsuccessfulResponseException;
 use Cloudcogs\PayPal\Message\AbstractResponse;
 use Cloudcogs\PayPal\Support\CatalogProducts\Product;
 
 class CreateProductResponse extends AbstractResponse
 {
+    protected Product $createdProduct;
     /**
      * @inheritDoc
      */
@@ -17,9 +19,9 @@ class CreateProductResponse extends AbstractResponse
 
     public function getCreatedProduct(): ?Product
     {
-        $data = $this->getData();
-        if (is_array($data)) return new Product($data);
+        if ($this->isSuccessful())
+            return $this->createdProduct ?? $this->createdProduct = new Product($this->getData());
 
-        return null;
+        throw new UnsuccessfulResponseException();
     }
 }

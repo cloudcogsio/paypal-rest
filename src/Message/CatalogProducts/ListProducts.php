@@ -3,6 +3,7 @@
 namespace Cloudcogs\PayPal\Message\CatalogProducts;
 
 
+use Cloudcogs\PayPal\Exception\AccessTokenNotFoundException;
 use Cloudcogs\PayPal\Message\AbstractRequest;
 use Cloudcogs\PayPal\Message\AbstractResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -18,6 +19,7 @@ class ListProducts extends AbstractRequest
 
     /**
      * @inheritDoc
+     * @throws AccessTokenNotFoundException
      */
     public function getData()
     {

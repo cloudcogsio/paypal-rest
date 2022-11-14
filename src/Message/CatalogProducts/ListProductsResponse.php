@@ -8,6 +8,8 @@ use Cloudcogs\PayPal\Support\CatalogProducts\ProductCollection;
 
 class ListProductsResponse extends AbstractResponse
 {
+    protected ProductCollection $productCollection;
+
     /**
      * @inheritDoc
      */
@@ -23,7 +25,7 @@ class ListProductsResponse extends AbstractResponse
     public function getProductList(): ProductCollection
     {
         if ($this->isSuccessful())
-            return new ProductCollection($this->getData());
+            return $this->productCollection ?? $this->productCollection = new ProductCollection($this->getData());
 
         throw new UnsuccessfulResponseException();
     }
