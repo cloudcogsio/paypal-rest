@@ -13,42 +13,53 @@ class Product extends JsonSerializableArrayObject
     const TYPE_DIGITAL = 'DIGITAL';
     const TYPE_SERVICE = 'SERVICE';
 
+    protected const ID = 'id';
+    protected const NAME = 'name';
+    protected const DESCRIPTION = 'description';
+    protected const TYPE = 'type';
+    protected const CATEGORY = 'category';
+    protected const HOME_URL = 'home_url';
+    protected const IMAGE_URL = 'image_url';
+    protected const CREATE_TIME = 'create_time';
+    protected const UPDATE_TIME = 'update_time';
+    protected const LINKS = 'links';
+
     public function getId(): ?string
     {
-        return $this->id;
+        return $this->{self::ID};
     }
 
     public function setId(string $id): Product
     {
-        $this->offsetSet('id', $id);
+        $this->offsetSet(self::ID, $id);
         return $this;
     }
 
     public function getName(): ?string
     {
-        return $this->name;
+        return $this->{self::NAME};
     }
 
     public function setName(string $name): Product
     {
-        $this->offsetSet('name', $name);
+        $this->offsetSet(self::NAME, $name);
         return $this;
     }
 
     public function getDescription(): ?string
     {
-        return $this->description;
+        return $this->{self::DESCRIPTION};
     }
 
     public function setDescription(string $description): Product
     {
-        $this->offsetSet('description', $description);
+        $this->offsetSet(self::DESCRIPTION, $description);
         return $this;
     }
 
     public function getType(): ?string
     {
-        return $this->type;
+        return $this->{self::TYPE};
     }
 
     /**
@@ -63,8 +74,7 @@ class Product extends JsonSerializableArrayObject
             case self::TYPE_DIGITAL:
             case self::TYPE_PHYSICAL:
             case self::TYPE_SERVICE:
-
-                $this->offsetSet('type', $type);
+                $this->offsetSet(self::TYPE, $type);
                 return $this;
         }
 
@@ -73,7 +83,7 @@ class Product extends JsonSerializableArrayObject
 
     public function getCategory(): ?string
     {
-        return $this->category;
+        return $this->{self::CATEGORY};
     }
 
     /**
@@ -86,7 +96,7 @@ class Product extends JsonSerializableArrayObject
         $categories = (new ProductCategories())();
         if (in_array($category, $categories))
         {
-            $this->offsetSet('category', $category);
+            $this->offsetSet(self::CATEGORY, $category);
             return $this;
         }
 
@@ -95,52 +105,62 @@ class Product extends JsonSerializableArrayObject
 
     public function getHomeUrl(): ?string
     {
-        return $this->home_url;
+        return $this->{self::HOME_URL};
     }
 
     public function setHomeUrl(string $home_url): Product
     {
-        $this->offsetSet('home_url', $home_url);
+        $this->offsetSet(self::HOME_URL, $home_url);
         return $this;
     }
 
     public function getImageUrl(): ?string
     {
-        return $this->image_url;
+        return $this->{self::IMAGE_URL};
     }
 
     public function setImageUrl(string $image_url): Product
     {
-        $this->offsetSet('image_url', $image_url);
+        $this->offsetSet(self::IMAGE_URL, $image_url);
         return $this;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getCreateTime(): ?\DateTime
     {
-        return ($this->offsetExists('create_time')) ?
-            new \DateTime($this->create_time) :
+        return ($this->offsetExists(self::CREATE_TIME)) ?
+            new \DateTime($this->{self::CREATE_TIME}) :
             null;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getUpdateTime(): ?\DateTime
     {
-        return ($this->offsetExists('update_time')) ?
-            new \DateTime($this->update_time) :
+        return ($this->offsetExists(self::UPDATE_TIME)) ?
+            new \DateTime($this->{self::UPDATE_TIME}) :
             null;
     }
 
     public function getLinks(): ?array
     {
-        if (is_array($this->links))
+        $links = $this->{self::LINKS};
+        if (is_array($links))
         {
-            $links = [];
-            foreach ($this->links as $link) {
-                $links[$link['rel']] = new Link($link);
+            foreach ($links as $i => $link) {
+                if (is_array($link))
+                {
+                    $links[$link[Link::REL]] = new Link($link);
+                    unset($links[$i]);
+                }
             }
 
-            $this->offsetSet('links', $links);
+            $this->offsetSet(self::LINKS, $links);
         }
 
-        return $this->links;
+        return $this->{self::LINKS};
     }
 }

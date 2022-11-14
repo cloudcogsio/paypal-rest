@@ -9,6 +9,10 @@ abstract class AbstractCollection extends \ArrayIterator
     protected int $currentKeyIndex;
     protected array $collectionKeys;
 
+    protected const TOTAL_ITEMS = 'total_items';
+    protected const TOTAL_PAGES = 'total_pages';
+    protected const LINKS = 'links';
+
     public function __construct($array = [], $flags = 0)
     {
         parent::__construct($array, $flags);
@@ -19,29 +23,38 @@ abstract class AbstractCollection extends \ArrayIterator
 
     abstract protected function setCollection(): AbstractCollection;
 
+    public function getCollection(): array
+    {
+        return $this->collection;
+    }
+
     public function getTotalItems(): int
     {
-        return $this->total_items;
+        return $this->{self::TOTAL_ITEMS};
     }
 
     public function getTotalPages(): int
     {
-        return $this->total_pages;
+        return $this->{self::TOTAL_PAGES};
     }
 
     public function getLinks(): ?array
     {
-        if (is_array($this->links) && count($this->links) > 0)
+        $links = $this->{self::LINKS};
+        if (is_array($links))
         {
-            $links = [];
-            foreach ($this->links as $link)
-            {
-                $links[$link['rel']] = new Link($link);
+            foreach ($links as $i => $link) {
+                if (is_array($link))
+                {
+                    $links[$link[Link::REL]] = new Link($link);
+                    unset($links[$i]);
+                }
             }
 
-            $this->offsetSet('links', $links);
+            $this->offsetSet(self::LINKS, $links);
         }
-        return $this->links;
+
+        return $this->{self::LINKS};
     }
 
     public function __get($offset)

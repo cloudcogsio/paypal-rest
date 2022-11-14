@@ -6,18 +6,20 @@ use Cloudcogs\PayPal\Support\AbstractCollection;
 
 class ProductCollection extends AbstractCollection
 {
-    public function getProducts(): ?array
+    protected const PRODUCTS = 'products';
+
+    protected function getProducts(): ?array
     {
-        if (is_array($this->products) && count($this->products) > 0)
+        if (is_array($this->{self::PRODUCTS}) && count($this->{self::PRODUCTS}) > 0)
         {
             $products = [];
-            foreach ($this->products as $product)
+            foreach ($this->{self::PRODUCTS} as $product)
             {
                 $products[] = new Product($product);
             }
-            $this->offsetSet('products', $products);
+            $this->offsetSet(self::PRODUCTS, $products);
         }
-        return $this->products;
+        return $this->{self::PRODUCTS};
     }
 
     protected function setCollection(): AbstractCollection
