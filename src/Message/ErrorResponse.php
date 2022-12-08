@@ -2,8 +2,21 @@
 
 namespace Cloudcogs\PayPal\Message;
 
+use Cloudcogs\PayPal\Support\Error;
+use Omnipay\Common\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
 class ErrorResponse extends AbstractResponse
 {
+    protected Error $error;
+
+    public function __construct(RequestInterface $request, ResponseInterface $response)
+    {
+        parent::__construct($request, $response);
+        if (!$this->isIdentityError())
+            $this->error = new Error($this->getData());
+    }
+
     public function isSuccessful(): bool
     {
         return false;
@@ -18,34 +31,39 @@ class ErrorResponse extends AbstractResponse
     {
         return ($this->isIdentityError()) ?
             $this->getDataAsObject()->offsetGet('error_description') :
-            $this->getDataAsObject()->offsetGet('message');
+            $this->error->getMessage();
     }
 
     public function getError(): string
     {
         return ($this->isIdentityError()) ?
             $this->getDataAsObject()->offsetGet('error') :
-            $this->getDataAsObject()->offsetGet('name');
+            $this->error->getName();
     }
 
     public function getDebugId(): ?string
     {
-        return (!$this->isIdentityError()) ?
-            $this->getDataAsObject()->offsetGet('debug_id') :
-            null;
+        return ($this->isIdentityError()) ?
+            null :
+            $this->error->getDebugId();
     }
 
     public function getDetails(): ?array
     {
-        return (!$this->isIdentityError()) ?
-            $this->getDataAsObject()->offsetGet('details') :
-            null;
+        return ($this->isIdentityError()) ?
+            null :
+            $this->error->getDetails();
     }
 
     public function getLinks(): ?array
     {
-        return (!$this->isIdentityError()) ?
-            $this->getDataAsObject()->offsetGet('links') :
-            null;
+        return ($this->isIdentityError()) ?
+            null :
+            $this->error->getLinks();
+    }
+
+    public function getPayPalError(): ?Error
+    {
+        return $this->error;
     }
 }

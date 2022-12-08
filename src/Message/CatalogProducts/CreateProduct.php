@@ -2,24 +2,31 @@
 
 namespace Cloudcogs\PayPal\Message\CatalogProducts;
 
+use Cloudcogs\PayPal\Constants;
 use Cloudcogs\PayPal\Exception\AccessTokenNotFoundException;
+use Cloudcogs\PayPal\Exception\InvalidPreferRepresentationException;
 use Cloudcogs\PayPal\Message\AbstractRequest;
 use Cloudcogs\PayPal\Message\AbstractResponse;
-use Cloudcogs\PayPal\Support\CatalogProducts\Product;
+use Cloudcogs\PayPal\Support\CatalogProducts\ProductRequest;
 use Omnipay\Common\Http\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
+/**
+ * Create a Product
+ *
+ * @see https://developer.paypal.com/docs/api/catalog-products/v1/#products_create
+ */
 class CreateProduct extends AbstractRequest
 {
     const ENDPOINT = '/v1/catalogs/products';
 
-    protected Product $product;
+    protected ProductRequest $product;
 
     public function __construct(ClientInterface $httpClient, HttpRequest $httpRequest)
     {
         parent::__construct($httpClient, $httpRequest);
-        $this->product = new Product();
+        $this->product = new ProductRequest();
     }
 
     function handleResponse(ResponseInterface $response): AbstractResponse
@@ -36,9 +43,11 @@ class CreateProduct extends AbstractRequest
      * @inheritDoc
      * @throws \JsonException
      * @throws AccessTokenNotFoundException
+     * @throws InvalidPreferRepresentationException
      */
     public function getData()
     {
+        $this->setPreferRepresentation(Constants::PAYPAL_PREFER_REPRESENTATION_DETAILED);
         $this->includeAuthorization();
         return $this->product->toJsonString();
     }
@@ -46,17 +55,17 @@ class CreateProduct extends AbstractRequest
     /**
      * Set a product to be created or configure the default product instance created when this class was instantiated.
      * Eg.
-     * $product = new Product([...]);
+     * $product = new ProductRequest([...]);
      * $Gateway->CreateProduct($product);
      *
      * OR
      *
      * $Gateway->CreateProduct()->setName('Test Product');
      *
-     * @param Product|null $product
-     * @return Product
+     * @param ProductRequest|null $product
+     * @return ProductRequest
      */
-    public function Product(?Product $product = null): Product
+    public function Product(?ProductRequest $product = null): ProductRequest
     {
         if ($product != null)
             $this->product = $product;

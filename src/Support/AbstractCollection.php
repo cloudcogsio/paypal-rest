@@ -4,6 +4,8 @@ namespace Cloudcogs\PayPal\Support;
 
 abstract class AbstractCollection extends \ArrayIterator
 {
+    use LinksHydratorTrait;
+
     protected array $collection = [];
     protected $currentKey;
     protected int $currentKeyIndex;
@@ -25,34 +27,32 @@ abstract class AbstractCollection extends \ArrayIterator
 
     public function getCollection(): array
     {
-        return $this->collection;
+        return $this->collection ?? [];
     }
 
+    /**
+     * @return int The total number of items.
+     */
     public function getTotalItems(): int
     {
         return $this->{self::TOTAL_ITEMS};
     }
 
+    /**
+     * @return int The total number of pages.
+     */
     public function getTotalPages(): int
     {
         return $this->{self::TOTAL_PAGES};
     }
 
+    /**
+     * @return array|null An array of request-related HATEOAS links.
+     */
     public function getLinks(): ?array
     {
-        $links = $this->{self::LINKS};
-        if (is_array($links))
-        {
-            foreach ($links as $i => $link) {
-                if (is_array($link))
-                {
-                    $links[$link[Link::REL]] = new Link($link);
-                    unset($links[$i]);
-                }
-            }
-
-            $this->offsetSet(self::LINKS, $links);
-        }
+        $links = $this->hydrateLinks($this->{self::LINKS});
+        $this->offsetSet(self::LINKS, $links);
 
         return $this->{self::LINKS};
     }

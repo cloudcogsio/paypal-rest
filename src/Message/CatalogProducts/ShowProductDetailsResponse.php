@@ -6,6 +6,9 @@ use Cloudcogs\PayPal\Exception\UnsuccessfulResponseException;
 use Cloudcogs\PayPal\Message\AbstractResponse;
 use Cloudcogs\PayPal\Support\CatalogProducts\Product;
 
+/**
+ * ShowProductDetails response handler
+ */
 class ShowProductDetailsResponse extends AbstractResponse
 {
     protected Product $product;
@@ -19,6 +22,7 @@ class ShowProductDetailsResponse extends AbstractResponse
     }
 
     /**
+     * @return Product
      * @throws UnsuccessfulResponseException
      */
     public function getProduct(): Product

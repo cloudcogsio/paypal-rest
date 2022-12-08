@@ -4,6 +4,9 @@ namespace Cloudcogs\PayPal\Support;
 
 use Cloudcogs\PayPal\Exception\InvalidPatchObjectOperationException;
 
+/**
+ * @see https://developer.paypal.com/docs/api/subscriptions/v1/#definition-patch
+ */
 class PatchObject extends JsonSerializableArrayObject
 {
     const OP_ADD = 'add';
@@ -57,34 +60,68 @@ class PatchObject extends JsonSerializableArrayObject
         return $this->op;
     }
 
+    /**
+     * The JSON Pointer to the target document location from which to move the value.
+     * Required for the move operation.
+     *
+     * @param string $json_pointer
+     * @return $this
+     */
     public function setFrom(string $json_pointer): PatchObject
     {
         $this->offsetSet('from', $json_pointer);
         return $this;
     }
 
+    /**
+     * The JSON Pointer to the target document location from which to move the value.
+     *
+     * @return string|null
+     */
     public function getFrom(): ?string
     {
         return $this->from;
     }
 
+    /**
+     * The JSON Pointer to the target document location at which to complete the operation.
+     *
+     * @param string $json_pointer
+     * @return $this
+     */
     public function setPath(string $json_pointer): PatchObject
     {
         $this->offsetSet('path', $json_pointer);
         return $this;
     }
 
+    /**
+     * The JSON Pointer to the target document location at which to complete the operation.
+     *
+     * @return string|null
+     */
     public function getPath(): ?string
     {
         return $this->path;
     }
 
-    public function setValue(string $value): PatchObject
+    /**
+     * The value to apply. The remove operation does not require a value.
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setValue($value): PatchObject
     {
         $this->offsetSet('value', $value);
         return $this;
     }
 
+    /**
+     * The value to apply.
+     *
+     * @return string|null
+     */
     public function getValue(): ?string
     {
         return $this->value;

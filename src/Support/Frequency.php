@@ -6,6 +6,9 @@ use Cloudcogs\PayPal\Exception\FrequencyIntervalCountOutOfBoundsException;
 use Cloudcogs\PayPal\Exception\FrequencyIntervalUnitNotSetException;
 use Cloudcogs\PayPal\Exception\InvalidFrequencyIntervalUnitException;
 
+/**
+ * @see https://developer.paypal.com/docs/api/subscriptions/v1/#definition-frequency
+ */
 class Frequency extends JsonSerializableArrayObject
 {
     const INTERVAL_DAY = 'DAY';
@@ -16,12 +19,24 @@ class Frequency extends JsonSerializableArrayObject
     protected const INTERVAL_UNIT = 'interval_unit';
     protected const INTERVAL_COUNT = 'interval_count';
 
+    /**
+     * The interval at which the subscription is charged or billed.
+     *
+     * @return string|null
+     */
     public function getIntervalUnit(): ?string
     {
         return $this->{self::INTERVAL_UNIT};
     }
 
     /**
+     * The interval at which the subscription is charged or billed.
+     * The possible values are:
+     *  DAY. A daily billing cycle.
+     *  WEEK. A weekly billing cycle.
+     *  MONTH. A monthly billing cycle.
+     *  YEAR. A yearly billing cycle.
+     *
      * @param string $intervalUnit
      * @return $this
      * @throws InvalidFrequencyIntervalUnitException
@@ -41,12 +56,20 @@ class Frequency extends JsonSerializableArrayObject
         throw new InvalidFrequencyIntervalUnitException($intervalUnit);
     }
 
+    /**
+     * The number of intervals after which a subscriber is billed.
+     *
+     * @return int|null
+     */
     public function getIntervalCount(): ?int
     {
         return $this->{self::INTERVAL_COUNT};
     }
 
     /**
+     * The number of intervals after which a subscriber is billed.
+     * For example, if the interval_unit is DAY with an interval_count of 2, the subscription is billed once every two days.
+     *
      * @param int $intervalCount
      * @return Frequency
      * @throws FrequencyIntervalCountOutOfBoundsException

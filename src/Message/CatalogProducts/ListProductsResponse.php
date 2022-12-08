@@ -6,6 +6,9 @@ use Cloudcogs\PayPal\Exception\UnsuccessfulResponseException;
 use Cloudcogs\PayPal\Message\AbstractResponse;
 use Cloudcogs\PayPal\Support\CatalogProducts\ProductCollection;
 
+/**
+ * ListProducts response handler class
+ */
 class ListProductsResponse extends AbstractResponse
 {
     protected ProductCollection $productCollection;

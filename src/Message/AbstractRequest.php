@@ -27,6 +27,11 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this;
     }
 
+    public function getGateway(): RestGateway
+    {
+        return $this->RestGateway;
+    }
+
     /**
      * @param $data
      * @return AbstractResponse
@@ -84,6 +89,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      *
      * @param ResponseInterface $response
      * @return AbstractResponse
+     * @throws \JsonException
      */
     public function getResponseOrError(ResponseInterface $response): AbstractResponse
     {
@@ -155,7 +161,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      *
      * @param string|null $uuid
      * @param bool $returnUuid
-     * @return AbstractRequest|\Ramsey\Uuid\UuidInterface|string
+     * @return AbstractRequest|string
      */
     public function setPayPalRequestId(?string $uuid, bool $returnUuid = false)
     {

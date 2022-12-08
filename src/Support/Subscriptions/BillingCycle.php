@@ -4,20 +4,57 @@ namespace Cloudcogs\PayPal\Support\Subscriptions;
 
 use Cloudcogs\PayPal\Exception\InvalidBillingCycleTenureTypeException;
 use Cloudcogs\PayPal\Support\Frequency;
-use Cloudcogs\PayPal\Support\JsonSerializableArrayObject;
 use Cloudcogs\PayPal\Support\PricingScheme;
 
-class BillingCycle extends JsonSerializableArrayObject
+/**
+ * @see https://developer.paypal.com/docs/api/subscriptions/v1/#definition-billing_cycle
+ */
+class BillingCycle extends BillingCycleOverride
 {
     protected const FREQUENCY = 'frequency';
     protected const TENURE_TYPE = 'tenure_type';
-    protected const SEQUENCE = 'sequence';
-    protected const TOTAL_CYCLES = 'total_cycles';
-    protected const PRICING_SCHEME = 'pricing_scheme';
 
     const TENURE_TYPE_REGULAR = 'REGULAR';
     const TENURE_TYPE_TRIAL = 'TRIAL';
 
+    /**
+     * @inheritDoc
+     * @param int $sequence
+     * @return $this
+     */
+    public function setSequence(int $sequence): BillingCycle
+    {
+        parent::setSequence($sequence);
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     * @param PricingScheme $pricingScheme
+     * @return $this
+     */
+    public function setPricingScheme(PricingScheme $pricingScheme): BillingCycle
+    {
+        parent::setPricingScheme($pricingScheme);
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     * @param int $cycles
+     * @return $this
+     */
+    public function setTotalCycles(int $cycles): BillingCycle
+    {
+        parent::setTotalCycles($cycles);
+        return $this;
+    }
+
+    /**
+     * The frequency details for this billing cycle.
+     *
+     * @return Frequency|null
+     */
     public function getFrequency(): ?Frequency
     {
         if (is_array($this->{self::FREQUENCY}))
@@ -26,29 +63,34 @@ class BillingCycle extends JsonSerializableArrayObject
         return $this->{self::FREQUENCY};
     }
 
+    /**
+     * The frequency details for this billing cycle.
+     *
+     * @param Frequency $frequency
+     * @return $this
+     */
     public function setFrequency(Frequency $frequency): BillingCycle
     {
         $this->offsetSet(self::FREQUENCY, $frequency);
         return $this;
     }
 
-    public function getSequence(): ?int
-    {
-        return $this->{self::SEQUENCE};
-    }
-
-    public function setSequence(int $sequence): BillingCycle
-    {
-        $this->offsetSet(self::SEQUENCE, $sequence);
-        return $this;
-    }
-
+    /**
+     * The tenure type of the billing cycle. In case of a plan having trial cycle, only 2 trial cycles are allowed per plan.
+     *
+     * @return string|null
+     */
     public function getTenureType(): ?string
     {
         return $this->{self::TENURE_TYPE};
     }
 
     /**
+     * The tenure type of the billing cycle. In case of a plan having trial cycle, only 2 trial cycles are allowed per plan.
+     * The possible values are:
+     *  REGULAR. A regular billing cycle.
+     *  TRIAL. A trial billing cycle.
+     *
      * @param string $tenureType
      * @return $this
      * @throws InvalidBillingCycleTenureTypeException
@@ -64,31 +106,5 @@ class BillingCycle extends JsonSerializableArrayObject
         }
 
         throw new InvalidBillingCycleTenureTypeException($tenureType);
-    }
-
-    public function getPricingScheme(): PricingScheme
-    {
-        $scheme = $this->{self::PRICING_SCHEME};
-        if (is_array($scheme))
-            $this->setPricingScheme(new PricingScheme($scheme));
-
-        return $this->{self::PRICING_SCHEME};
-    }
-
-    public function setPricingScheme(PricingScheme $pricingScheme): BillingCycle
-    {
-        $this->offsetSet(self::PRICING_SCHEME, $pricingScheme);
-        return $this;
-    }
-
-    public function getTotalCycles(): ?int
-    {
-        return $this->{self::TOTAL_CYCLES};
-    }
-
-    public function setTotalCycles(int $cycles): BillingCycle
-    {
-        $this->offsetSet(self::TOTAL_CYCLES, $cycles);
-        return $this;
     }
 }

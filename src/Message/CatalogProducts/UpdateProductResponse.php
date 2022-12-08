@@ -4,6 +4,9 @@ namespace Cloudcogs\PayPal\Message\CatalogProducts;
 
 use Cloudcogs\PayPal\Message\EmptyResponse;
 
+/**
+ * UpdateProduct response handler
+ */
 class UpdateProductResponse extends EmptyResponse
 {
     /**

@@ -9,10 +9,16 @@ use Cloudcogs\PayPal\Exception\InvalidProductUpdateDataException;
 use Cloudcogs\PayPal\Message\AbstractRequest;
 use Cloudcogs\PayPal\Message\AbstractResponse;
 use Cloudcogs\PayPal\Support\CatalogProducts\ProductCategories;
+use Cloudcogs\PayPal\Support\JsonSerializableArrayObject;
 use Cloudcogs\PayPal\Support\PatchObject;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Update a product by ID
+ *
+ * @see https://developer.paypal.com/docs/api/catalog-products/v1/#products_patch
+ */
 class UpdateProduct extends AbstractRequest
 {
     const ENDPOINT = '/v1/catalogs/products/';
@@ -56,6 +62,12 @@ class UpdateProduct extends AbstractRequest
         return $this->getParameter(self::PARAM_DESCRIPTION);
     }
 
+    /**
+     * Set new product description
+     *
+     * @param string $value
+     * @return UpdateProduct
+     */
     public function setProductDescription(string $value): UpdateProduct
     {
         $this->setParameter(self::PARAM_DESCRIPTION, $value);
@@ -68,8 +80,13 @@ class UpdateProduct extends AbstractRequest
     }
 
     /**
+     * Set the operation for description
+     *
+     * Options are
+     *   add, replace, remove
+     *
      * @param string $op
-     * @return $this
+     * @return UpdateProduct
      * @throws InvalidPatchObjectOperationException
      */
     public function setProductDescriptionOperation(string $op): UpdateProduct
@@ -86,8 +103,10 @@ class UpdateProduct extends AbstractRequest
     }
 
     /**
+     * Set new product category
+     *
      * @param string $category
-     * @return $this
+     * @return UpdateProduct
      * @throws InvalidProductCategoryException
      */
     public function setProductCategory(string $category): UpdateProduct
@@ -104,8 +123,13 @@ class UpdateProduct extends AbstractRequest
     }
 
     /**
+     * Set the operation for category
+     *
+     * Options are
+     *   add, replace, remove
+     *
      * @param string $op
-     * @return $this
+     * @return UpdateProduct
      * @throws InvalidPatchObjectOperationException
      */
     public function setProductCategoryOperation(string $op): UpdateProduct
@@ -121,6 +145,12 @@ class UpdateProduct extends AbstractRequest
         return $this->getParameter(self::PARAM_IMAGE_URL);
     }
 
+    /**
+     * Set the new product image url
+     *
+     * @param string $value
+     * @return $this
+     */
     public function setImageUrl(string $value): UpdateProduct
     {
         $this->setParameter(self::PARAM_IMAGE_URL, $value);
@@ -133,6 +163,11 @@ class UpdateProduct extends AbstractRequest
     }
 
     /**
+     * Set the operation for image url
+     *
+     * Options are
+     *   add, replace, remove
+     *
      * @param string $op
      * @return $this
      * @throws InvalidPatchObjectOperationException
@@ -150,6 +185,12 @@ class UpdateProduct extends AbstractRequest
         return $this->getParameter(self::PARAM_HOME_URL);
     }
 
+    /**
+     * Set new product homepage url
+     *
+     * @param string $value
+     * @return $this
+     */
     public function setHomeUrl(string $value): UpdateProduct
     {
         $this->setParameter(self::PARAM_HOME_URL, $value);
@@ -162,6 +203,11 @@ class UpdateProduct extends AbstractRequest
     }
 
     /**
+     * Set the operation for home url
+     *
+     * Options are
+     *   add, replace, remove
+     *
      * @param string $op
      * @return $this
      * @throws InvalidPatchObjectOperationException
@@ -179,6 +225,7 @@ class UpdateProduct extends AbstractRequest
      * @throws AccessTokenNotFoundException
      * @throws InvalidPatchObjectOperationException
      * @throws InvalidProductUpdateDataException
+     * @throws \JsonException
      */
     public function getData()
     {
@@ -186,7 +233,7 @@ class UpdateProduct extends AbstractRequest
 
         // Descr
         $descr = $this->getProductDescription();
-        if ($descr != null)
+        if ($descr !== null)
         {
             $descrPatch = new PatchObject();
             $descrPatch
@@ -198,7 +245,7 @@ class UpdateProduct extends AbstractRequest
 
         // Category
         $category = $this->getProductCategory();
-        if ($category != null)
+        if ($category !== null)
         {
             $categoryPatch = new PatchObject();
             $categoryPatch
@@ -210,7 +257,7 @@ class UpdateProduct extends AbstractRequest
 
         // Image URL
         $image_url = $this->getImageUrl();
-        if ($image_url != null)
+        if ($image_url !== null)
         {
             $imageUrlPatch = new PatchObject();
             $imageUrlPatch
@@ -222,7 +269,7 @@ class UpdateProduct extends AbstractRequest
 
         // Home URL
         $home_url = $this->getImageUrl();
-        if ($home_url != null)
+        if ($home_url !== null)
         {
             $homeUrlPatch = new PatchObject();
             $homeUrlPatch
@@ -235,6 +282,6 @@ class UpdateProduct extends AbstractRequest
         if (empty($this->updates))
             throw new InvalidProductUpdateDataException();
 
-        return json_encode($this->updates);
+        return (new JsonSerializableArrayObject())->toJsonString($this->updates);
     }
 }

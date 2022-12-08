@@ -8,6 +8,11 @@ use Cloudcogs\PayPal\Message\AbstractResponse;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Shows details for a product, by ID.
+ *
+ * @see https://developer.paypal.com/docs/api/catalog-products/v1/#products_get
+ */
 class ShowProductDetails extends AbstractRequest
 {
     const ENDPOINT = '/v1/catalogs/products/';
