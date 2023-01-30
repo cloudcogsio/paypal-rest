@@ -24,6 +24,7 @@ use Cloudcogs\PayPal\Message\Subscriptions\SuspendSubscription;
 use Cloudcogs\PayPal\Message\Subscriptions\UpdatePlan;
 use Cloudcogs\PayPal\Message\Subscriptions\UpdatePricing;
 use Cloudcogs\PayPal\Message\Subscriptions\UpdateSubscription;
+use Cloudcogs\PayPal\Message\Webhooks\ListWebhooks;
 use Cloudcogs\PayPal\Support\CatalogProducts\ProductRequest;
 use Cloudcogs\PayPal\Support\Subscriptions\PlanRequest;
 use Cloudcogs\PayPal\Support\Subscriptions\RevisedSubscriptionRequest;
@@ -405,6 +406,22 @@ class RestGateway extends AbstractGateway
         /** @var $request ListTransactionsForSubscription */
         $request = $this->createRequest(ListTransactionsForSubscription::class, $parameters);
         $request->setSubscriptionId($subscriptionId);
+
+        return $request->setGateway($this);
+    }
+
+    /******************** WEBHOOKS *******************/
+
+    /**
+     * Lists webhooks for an app.
+     *
+     * @param array $parameters
+     * @return ListWebhooks
+     */
+    public function ListWebhooks(array $parameters = []): ListWebhooks
+    {
+        /** @var ListWebhooks $request */
+        $request = $this->createRequest(ListWebhooks::class, $parameters);
 
         return $request->setGateway($this);
     }
