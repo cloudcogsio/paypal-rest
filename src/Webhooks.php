@@ -41,4 +41,20 @@ class Webhooks extends RestGateway
 
         return $request->setGateway($this);
     }
+
+    /**
+     * Verifies a webhook signature.
+     *
+     * @see https://developer.paypal.com/docs/api/webhooks/v1/#verify-webhook-signature_post
+     * @param VerifyWebhookSignatureRequest $verifyWebhookSignatureRequest
+     * @return VerifyWebhookSignature
+     */
+    public function VerifyWebhookSignature(VerifyWebhookSignatureRequest $verifyWebhookSignatureRequest): VerifyWebhookSignature
+    {
+        /** @var VerifyWebhookSignature $request */
+        $request = $this->createRequest(VerifyWebhookSignature::class, []);
+        $request->setVerifyWebhookSignatureRequest($verifyWebhookSignatureRequest);
+
+        return $request->setGateway($this);
+    }
 }
