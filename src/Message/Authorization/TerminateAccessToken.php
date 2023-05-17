@@ -2,6 +2,7 @@
 
 namespace Cloudcogs\PayPal\Message\Authorization;
 
+use Cloudcogs\PayPal\Exception\AccessTokenNotFoundException;
 use Cloudcogs\PayPal\Message\AbstractRequest;
 use Cloudcogs\PayPal\Message\AbstractResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -13,6 +14,9 @@ class TerminateAccessToken extends AbstractRequest
     const PARAM_TOKEN = 'token';
     const PARAM_TOKEN_TYPE_HINT = 'token_type_hint';
 
+    /**
+     * @throws \JsonException
+     */
     function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new TerminateAccessTokenResponse($this, $response);
@@ -51,6 +55,9 @@ class TerminateAccessToken extends AbstractRequest
         return $this->getParameter(self::PARAM_TOKEN_TYPE_HINT) ?? 'ACCESS_TOKEN';
     }
 
+    /**
+     * @throws AccessTokenNotFoundException
+     */
     public function getHeaders(array $headers = []): array
     {
         $this->includeAuthorization();

@@ -21,6 +21,9 @@ class UpdatePricing extends AbstractRequest
     protected const PLAN_ID = 'plan_id';
     protected const PRICING_SCHEMES = 'pricing_schemes';
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new UpdatePricingResponse($this, $response);

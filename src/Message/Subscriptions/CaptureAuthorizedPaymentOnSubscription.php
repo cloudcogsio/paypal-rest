@@ -2,6 +2,7 @@
 
 namespace Cloudcogs\PayPal\Message\Subscriptions;
 
+use Cloudcogs\PayPal\Exception\AccessTokenNotFoundException;
 use Cloudcogs\PayPal\Exception\ValueOutOfBoundsException;
 use Cloudcogs\PayPal\Message\AbstractRequest;
 use Cloudcogs\PayPal\Message\AbstractResponse;
@@ -28,6 +29,9 @@ class CaptureAuthorizedPaymentOnSubscription extends AbstractRequest
      */
     const CAPTURE_TYPE_OUTSTANDING_BALANCE = 'OUTSTANDING_BALANCE';
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new CaptureAuthorizedPaymentOnSubscriptionResponse($this, $response);
@@ -110,9 +114,8 @@ class CaptureAuthorizedPaymentOnSubscription extends AbstractRequest
 
     /**
      * @return string
-     * @throws \Cloudcogs\PayPal\Exception\AccessTokenNotFoundException
+     * @throws AccessTokenNotFoundException
      * @throws \JsonException
-     * @throws \Omnipay\Common\Exception\InvalidRequestException
      */
     public function getData()
     {

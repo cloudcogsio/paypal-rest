@@ -18,6 +18,9 @@ class ActivatePlan extends AbstractRequest
 
     protected const PLAN_ID = 'plan_id';
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new ActivatePlanResponse($this, $response);
@@ -42,7 +45,7 @@ class ActivatePlan extends AbstractRequest
      * @return null
      * @throws AccessTokenNotFoundException
      */
-    public function getData()
+    public function getData(): null
     {
         $this->includeAuthorization();
         return null;

@@ -15,6 +15,9 @@ class ListProducts extends AbstractCollectionRequest
 {
     const ENDPOINT = '/v1/catalogs/products';
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new ListProductsResponse($this, $response);

@@ -2,6 +2,8 @@
 
 namespace Cloudcogs\PayPal\Message\Subscriptions;
 
+use Cloudcogs\PayPal\Exception\AccessTokenNotFoundException;
+use Cloudcogs\PayPal\Exception\InvalidPatchObjectOperationException;
 use Cloudcogs\PayPal\Exception\InvalidSubscriptionUpdateDataException;
 use Cloudcogs\PayPal\Message\AbstractRequest;
 use Cloudcogs\PayPal\Message\AbstractResponse;
@@ -49,6 +51,9 @@ class UpdateSubscription extends AbstractRequest
     protected array $total_cycles = [];
     protected array $updates = [];
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new UpdateSubscriptionResponse($this, $response);
@@ -220,10 +225,10 @@ class UpdateSubscription extends AbstractRequest
     /**
      * @return string
      * @throws InvalidSubscriptionUpdateDataException
-     * @throws \Cloudcogs\PayPal\Exception\AccessTokenNotFoundException
-     * @throws \Cloudcogs\PayPal\Exception\InvalidPatchObjectOperationException
+     * @throws AccessTokenNotFoundException
+     * @throws InvalidPatchObjectOperationException|\JsonException
      */
-    public function getData()
+    public function getData(): string
     {
         $this->includeAuthorization();
 

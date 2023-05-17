@@ -18,6 +18,9 @@ class ListPlans extends AbstractCollectionRequest
     protected const PLAN_IDS = 'plan_ids';
     protected const PRODUCT_ID = 'product_id';
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new ListPlansResponse($this, $response);

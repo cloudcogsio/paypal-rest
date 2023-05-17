@@ -32,6 +32,9 @@ class UpdateProduct extends AbstractRequest
 
     protected array $updates = [];
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new UpdateProductResponse($this, $response);

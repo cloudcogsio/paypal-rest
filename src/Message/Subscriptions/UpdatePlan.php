@@ -2,6 +2,8 @@
 
 namespace Cloudcogs\PayPal\Message\Subscriptions;
 
+use Cloudcogs\PayPal\Exception\AccessTokenNotFoundException;
+use Cloudcogs\PayPal\Exception\InvalidPatchObjectOperationException;
 use Cloudcogs\PayPal\Exception\InvalidPlanUpdateDataException;
 use Cloudcogs\PayPal\Message\AbstractRequest;
 use Cloudcogs\PayPal\Message\AbstractResponse;
@@ -28,6 +30,9 @@ class UpdatePlan extends AbstractRequest
 
     protected array $updates = [];
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new UpdatePlanResponse($this, $response);
@@ -91,6 +96,11 @@ class UpdatePlan extends AbstractRequest
 
     /**
      * @inheritDoc
+     * @return string
+     * @throws AccessTokenNotFoundException
+     * @throws InvalidPlanUpdateDataException
+     * @throws InvalidPatchObjectOperationException
+     * @throws \JsonException
      */
     public function getData()
     {

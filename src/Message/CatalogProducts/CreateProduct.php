@@ -29,6 +29,9 @@ class CreateProduct extends AbstractRequest
         $this->product = new ProductRequest();
     }
 
+    /**
+     * @throws \JsonException
+     */
     function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new CreateProductResponse($this, $response);

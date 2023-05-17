@@ -25,6 +25,7 @@ class CreateSubscription extends AbstractRequest
     /**
      * @param ResponseInterface $response
      * @return AbstractResponse
+     * @throws \JsonException
      */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {

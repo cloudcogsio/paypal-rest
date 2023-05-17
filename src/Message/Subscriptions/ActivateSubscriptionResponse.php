@@ -12,7 +12,7 @@ class ActivateSubscriptionResponse extends AbstractResponse
     /**
      * @inheritDoc
      */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return $this->getHttpResponse()->getStatusCode() == 204;
     }

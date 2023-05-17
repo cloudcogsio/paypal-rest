@@ -29,6 +29,9 @@ class CreatePlan extends AbstractRequest
         $this->plan = new PlanRequest();
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new CreatePlanResponse($this, $response);

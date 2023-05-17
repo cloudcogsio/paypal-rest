@@ -2,6 +2,7 @@
 
 namespace Cloudcogs\PayPal\Message\Subscriptions;
 
+use Cloudcogs\PayPal\Exception\AccessTokenNotFoundException;
 use Cloudcogs\PayPal\Message\AbstractRequest;
 use Cloudcogs\PayPal\Message\AbstractResponse;
 use Cloudcogs\PayPal\Support\DateTime;
@@ -76,6 +77,7 @@ class ListTransactionsForSubscription extends AbstractRequest
 
     /**
      * @inheritDoc
+     * @throws AccessTokenNotFoundException
      */
     public function getData()
     {

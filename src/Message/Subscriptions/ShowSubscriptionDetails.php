@@ -20,6 +20,9 @@ class ShowSubscriptionDetails extends AbstractRequest
     protected const SUBSCRIPTION_ID = 'subscription_id';
     protected const FIELDS = 'fields';
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new ShowSubscriptionDetailsResponse($this, $response);

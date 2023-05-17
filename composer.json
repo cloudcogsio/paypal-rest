@@ -11,14 +11,21 @@
   "description": "PHP SDK for PayPal's REST API with Omnipay compatible Gateway",
   "minimum-stability": "dev",
   "require": {
-    "php": "^7.4",
+    "php": "^8.2",
     "omnipay/common": "^3",
     "ext-json": "*",
-    "ramsey/uuid": "^4.2.3"
+    "ramsey/uuid": "^4.2.3",
+    "symfony/http-client": "6.3.x-dev",
+    "nyholm/psr7": "^1.8@dev"
   },
   "autoload": {
     "psr-4": {
       "Cloudcogs\\PayPal\\": "src"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
     }
   }
 }

@@ -35,6 +35,9 @@ class DeactivatePlanResponse extends AbstractResponse
         throw new UnsuccessfulResponseException();
     }
 
+    /**
+     * @throws UnsuccessfulResponseException
+     */
     protected function getPlanDetails(): Plan
     {
         /** @var $originalRequest DeactivatePlan */

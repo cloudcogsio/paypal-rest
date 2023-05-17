@@ -2,6 +2,7 @@
 
 namespace Cloudcogs\PayPal\Message\Subscriptions;
 
+use Cloudcogs\PayPal\Exception\AccessTokenNotFoundException;
 use Cloudcogs\PayPal\Message\AbstractRequest;
 use Cloudcogs\PayPal\Message\AbstractResponse;
 use Cloudcogs\PayPal\Support\JsonSerializableArrayObject;
@@ -19,6 +20,9 @@ class CancelSubscription extends AbstractRequest
     protected const SUBSCRIPTION_ID = 'subscription_id';
     protected const REASON = 'reason';
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new CancelSubscriptionResponse($this, $response);
@@ -51,7 +55,7 @@ class CancelSubscription extends AbstractRequest
 
     /**
      * @return string
-     * @throws \Cloudcogs\PayPal\Exception\AccessTokenNotFoundException
+     * @throws AccessTokenNotFoundException
      * @throws \JsonException
      */
     public function getData(): string

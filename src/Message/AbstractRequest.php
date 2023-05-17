@@ -35,6 +35,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     /**
      * @param $data
      * @return AbstractResponse
+     * @throws \JsonException
      */
     public function sendData($data): AbstractResponse
     {
@@ -163,7 +164,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      * @param bool $returnUuid
      * @return AbstractRequest|string
      */
-    public function setPayPalRequestId(?string $uuid, bool $returnUuid = false)
+    public function setPayPalRequestId(?string $uuid, bool $returnUuid = false): string|AbstractRequest|static
     {
         $uuid = $uuid ?? (Uuid::uuid4())->toString();
         $this->setParameter(Constants::HEADER_PAYPAL_REQUEST_ID, $uuid);

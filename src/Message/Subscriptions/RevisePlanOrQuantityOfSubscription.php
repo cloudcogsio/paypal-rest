@@ -21,6 +21,9 @@ class RevisePlanOrQuantityOfSubscription extends AbstractRequest
     protected const SUBSCRIPTION_ID = 'subscription_id';
     protected const REVISED_SUBSCRIPTION_REQUEST = 'revised_subscription_request';
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new RevisePlanOrQuantityOfSubscriptionResponse($this, $response);
@@ -53,12 +56,10 @@ class RevisePlanOrQuantityOfSubscription extends AbstractRequest
 
     /**
      * @return string
-     * @throws \Cloudcogs\PayPal\Exception\AccessTokenNotFoundException
      * @throws \JsonException
      */
     public function getData(): string
     {
-        //$this->includeAuthorization();
         return $this->getRevisedSubscriptionRequest()->toJsonString();
     }
 }

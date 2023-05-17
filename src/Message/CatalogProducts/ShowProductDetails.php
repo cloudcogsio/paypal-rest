@@ -17,6 +17,9 @@ class ShowProductDetails extends AbstractRequest
 {
     const ENDPOINT = '/v1/catalogs/products/';
 
+    /**
+     * @throws \JsonException
+     */
     public function handleResponse(ResponseInterface $response): AbstractResponse
     {
         return new ShowProductDetailsResponse($this, $response);
@@ -31,7 +34,7 @@ class ShowProductDetails extends AbstractRequest
      * @return null
      * @throws AccessTokenNotFoundException
      */
-    public function getData()
+    public function getData(): null
     {
         $this->includeAuthorization();
         return null;

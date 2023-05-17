@@ -2,6 +2,7 @@
 
 namespace Cloudcogs\PayPal\Message\Authorization;
 
+use Cloudcogs\PayPal\Exception\AccessTokenNotFoundException;
 use Cloudcogs\PayPal\Message\AbstractRequest;
 use Psr\Http\Message\ResponseInterface;
 
@@ -123,6 +124,9 @@ class GenerateAccessToken extends AbstractRequest
         return $this->getParameter(self::PARAM_RETURN_UNCONSENTED_SCOPES) ?? 'true';
     }
 
+    /**
+     * @throws AccessTokenNotFoundException
+     */
     public function getHeaders(array $headers = []): array
     {
         $this->includeAuthorization(false);
@@ -134,6 +138,9 @@ class GenerateAccessToken extends AbstractRequest
         return parent::getHeaders($headers);
     }
 
+    /**
+     * @throws \JsonException
+     */
     function handleResponse(ResponseInterface $response): GenerateAccessTokenResponse
     {
         $accessTokenResponse = new GenerateAccessTokenResponse($this, $response);
