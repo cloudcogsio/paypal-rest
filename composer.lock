@@ -1645,7 +1645,10 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "symfony/http-client": 20,
+        "nyholm/psr7": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
