@@ -19,7 +19,12 @@ abstract class AbstractResponse extends \Omnipay\Common\Message\AbstractResponse
         $this->HttpResponse = $response;
         $body = $response->getBody()->getContents();
 
-        parent::__construct($request, json_decode($body, true, 4096, JSON_THROW_ON_ERROR));
+        if (stripos($response->getHeaderLine('Content-Type'),"json") > -1)
+        {
+            $body = (!empty($body)) ? json_decode($body, true, 4096, JSON_THROW_ON_ERROR) : $body;
+        }
+
+        parent::__construct($request, $body);
     }
 
     public function getHttpResponse(): ResponseInterface
